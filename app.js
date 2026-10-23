@@ -24,25 +24,34 @@
     document.body.classList.toggle('menu-open', opening);
   });
   nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
-  window.addEventListener('resize', () => { if (window.innerWidth > 700) closeMenu(); });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) closeMenu();
+  });
 
-  document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => {
-    const select = form.elements.servico;
-    select.value = link.dataset.service;
-  }));
+  document.querySelectorAll('[data-service]').forEach(link => {
+    link.addEventListener('click', () => {
+      const select = form.elements.servico;
+      select.value = link.dataset.service;
+    });
+  });
 
   document.querySelector('#year').textContent = new Date().getFullYear();
 
   if ('IntersectionObserver' in window && !reducedMotion) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
     document.querySelectorAll('[data-reveal]').forEach(element => observer.observe(element));
   } else {
     document.querySelectorAll('[data-reveal]').forEach(element => element.classList.add('revealed'));
@@ -62,14 +71,18 @@
     const error = field.closest('label')?.querySelector('.error');
     let message = '';
     if (field.name === 'ano' && field.value && !/^(19|20)\d{2}$/.test(field.value)) message = messages.ano;
-    else if (!field.checkValidity()) message = messages[field.name] || 'Verifica este campo.';
+    else if (!field.checkValidity()) {
+      message = messages[field.name] || 'Verifica este campo.';
+    }
     field.classList.toggle('invalid', Boolean(message));
     if (error) error.textContent = message;
     return !message;
   };
   form.querySelectorAll('input:not([type=radio]):not([type=checkbox]),select,textarea').forEach(field => {
     field.addEventListener('blur', () => validateField(field));
-    field.addEventListener('input', () => { if (field.classList.contains('invalid')) validateField(field); });
+    field.addEventListener('input', () => {
+      if (field.classList.contains('invalid')) validateField(field);
+    });
     field.addEventListener('change', () => validateField(field));
   });
   form.addEventListener('submit', event => {
