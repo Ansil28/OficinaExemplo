@@ -418,7 +418,7 @@ h1,h2,h3,p {
   position:relative
 }
 .workshop-photo {
-  background:url('https://images.unsplash.com/photo-1486754735734-325b5831c3ad?auto=format&fit=crop&w=1400&q=85') center/cover;
+  background:url('https://images.unsplash.com/photo-1643700973089-baa86a1ab9ee?auto=format&fit=crop&w=1400&q=85') center/cover;
   min-height:580px;
   filter:saturate(.65)
 }
